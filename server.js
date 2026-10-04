@@ -1,4 +1,4 @@
-const express = require("express");
+﻿const express = require("express");
 const dotenv = require("dotenv");
 const { GoogleGenAI } = require("@google/genai");
 
@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 // CHECK GEMINI API KEY
 // ===============================
 if (!process.env.GEMINI_API_KEY) {
-    console.error("❌ GEMINI_API_KEY is missing in .env");
+    console.error("âŒ GEMINI_API_KEY is missing in .env");
     process.exit(1);
 }
 
@@ -43,10 +43,10 @@ app.get("/health", (req, res) => {
 // ===============================
 async function askGemini(message) {
     try {
-        console.log("🤖 Sending message to Gemini...");
+        console.log("ðŸ¤– Sending message to Gemini...");
 
         const response = await ai.models.generateContent({
-            model: "gemini-3.8-flash",
+            model: "gemini-2.0-flash",
             contents: message,
             config: {
                 thinkingConfig: {
@@ -56,12 +56,12 @@ async function askGemini(message) {
             }
         });
 
-        console.log("✅ Gemini reply received");
+        console.log("âœ… Gemini reply received");
 
         return response.text || "Sorry, I could not generate a response.";
 
     } catch (error) {
-        console.error("❌ GEMINI ERROR:");
+        console.error("âŒ GEMINI ERROR:");
         console.error(error);
 
         throw error;
@@ -80,7 +80,7 @@ app.post("/chat", async (req, res) => {
         });
     }
 
-    console.log("👤 User:", message);
+    console.log("ðŸ‘¤ User:", message);
 
     try {
         const reply = await askGemini(message);
@@ -90,7 +90,7 @@ app.post("/chat", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("❌ Chat request failed");
+        console.error("âŒ Chat request failed");
 
         // Quota / rate limit error
         if (
@@ -115,9 +115,9 @@ app.post("/chat", async (req, res) => {
 const server = app.listen(PORT, "0.0.0.0", () => {
     console.log("");
     console.log("================================");
-    console.log("🤖 CHATBOT SERVER STARTED");
-    console.log(`🌐 http://localhost:${PORT}`);
-    console.log(`🔗 http://localhost:${PORT}/health`);
+    console.log("ðŸ¤– CHATBOT SERVER STARTED");
+    console.log(`ðŸŒ http://localhost:${PORT}`);
+    console.log(`ðŸ”— http://localhost:${PORT}/health`);
     console.log("================================");
 });
 
@@ -125,7 +125,7 @@ const server = app.listen(PORT, "0.0.0.0", () => {
 // SERVER ERROR
 // ===============================
 server.on("error", (error) => {
-    console.error("❌ SERVER ERROR:");
+    console.error("âŒ SERVER ERROR:");
 
     if (error.code === "EADDRINUSE") {
         console.error(`Port ${PORT} is already in use.`);
@@ -138,7 +138,7 @@ server.on("error", (error) => {
 // STOP SERVER
 // ===============================
 process.on("SIGINT", () => {
-    console.log("\n🛑 Server stopped.");
+    console.log("\nðŸ›‘ Server stopped.");
 
     server.close(() => {
         process.exit(0);
@@ -146,7 +146,7 @@ process.on("SIGINT", () => {
 });
 
 process.on("SIGTERM", () => {
-    console.log("\n🛑 Server stopping...");
+    console.log("\nðŸ›‘ Server stopping...");
 
     server.close(() => {
         process.exit(0);
